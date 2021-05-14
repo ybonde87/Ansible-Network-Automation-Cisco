@@ -14,7 +14,6 @@
     - debug: 
         msg: 
         - "Current version is {{ ansible_net_version }}"
-        - "Upgrade to IOS release 16.09.07"
 
     - debug: 
         msg: 
@@ -25,5 +24,6 @@
     - debug: 
         msg: 
         - "Image is not compliant and will be upgraded"
+        - "Upgrade to IOS release 16.09.07"
 
       when: ansible_net_version != upgrade_ios_version
