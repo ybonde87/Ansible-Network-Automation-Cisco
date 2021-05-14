@@ -1,0 +1,117 @@
+---
+
+
+   - name: Configure aaa new-model
+     ios_config:
+
+       lines:
+         - aaa new-model
+
+
+   - name: Configure LAB-ISE1 tacacs server
+     ios_config:
+       lines:
+         - address ipv4 10.47.0.145
+         - key 0 tacacskey
+       parents:
+         - tacacs server LAB-ISE1
+
+
+   - name: Configure LAB-ISE2 tacacs server
+     ios_config:
+       lines:
+         - address ipv4 10.47.0.146
+         - key 0 tacacskey
+       parents:
+         - tacacs server LAB-ISE2
+
+
+   - name: Configure aaa group server
+     ios_config:
+       lines:
+         - server name LAB-ISE1
+         - server name LAB-ISE2
+       parents:
+         - aaa group server tacacs+ ISE_LAB_GROUP
+
+
+   - name: Configure sorce interface for TACACS
+     ios_config:
+       lines:
+         - ip tacacs source-interface lo 0
+
+
+   - name: Configure aaa Authentication
+     ios_config:
+       lines:
+         - aaa authentication login default group ISE_LAB_GROUP local
+         - aaa authentication login VTY group ISE_LAB_GROUP local
+         - aaa authentication login CONSOLE group ISE_LAB_GROUP local
+         - aaa authentication enable default group ISE_LAB_GROUP enable
+
+
+   - name: Configure aaa accounting
+     ios_config:
+       lines:
+         - aaa accounting exec default start-stop group ISE_LAB_GROUP 
+         - aaa accounting commands 1 default start-stop group ISE_LAB_GROUP
+         - aaa accounting commands 15 default start-stop group ISE_LAB_GROUP
+
+
+   - name: Configure aaa session-id
+     ios_config:
+       lines:
+         - aaa session-id common
+
+
+   - name: Configure Console
+     ios_config:
+       lines:
+         - privilege level 15
+         - session-timeout 30
+         - exec-timeout 0 0
+         - logging synchronous
+         - login authentication CONSOLE
+         - stopbits 1
+       parents:
+         - line con 0
+
+
+   - name: Configure Line VTY 0 4
+     ios_config:
+       lines:
+         - session-timeout 30
+         - exec-timeout 10 0
+         - access-class 24 in
+         - access-class 24 out
+         - logging synchronous
+         - login authentication VTY
+         - transport input all
+         - transport output all
+       parents:
+         - line vty 0 4
+
+
+   - name: Configure Line VTY 5 15
+     ios_config:
+       lines:
+         - session-timeout 30
+         - exec-timeout 10 0
+         - access-class 24 in
+         - access-class 24 out
+         - logging synchronous
+         - login authentication VTY
+         - transport input all
+         - transport output all       
+       parents:
+         - line vty 5 15
+
+
+   - name: Configure aaa authorization
+     ios_config:
+       lines:
+         - aaa authorization config-commands
+         - aaa authorization exec default group ISE_LAB_GROUP local
+         - aaa authorization commands 1 default group ISE_LAB_GROUP
+         - aaa authorization commands 15 default group ISE_LAB_GROUP
+

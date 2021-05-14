@@ -1,0 +1,55 @@
+---
+
+   - name: Disable Default Cisco TAC Call Home on Switch
+     cisco.ios.ios_config:
+       lines:
+         - no active
+   
+       parents:
+         - call-home
+         - profile CiscoTAC-1
+   
+   
+   - name: Disable Server Identity check and Add smartnet Contact Email address on Switch
+     cisco.ios.ios_config:
+       lines:
+         - no http secure server-identity-check
+         - contact-email-addr <smartnet email>
+   
+       parents:
+         - call-home
+   
+   
+   - name: Create New License Manager Profile on Switch for DNAC On-Prem Server
+     cisco.ios.ios_config:
+       lines:
+         - reporting smart-licensing-data
+         - destination transport-method http
+         - destination address http https://<Cisco On Premises Licensing Server IP>/Transportgateway/services/DeviceRequestHandler
+         - destination preferred-msg-format xml
+         - active
+   
+       parents:
+         - call-home
+         - profile DNAC-LM
+   
+   
+   - name: Enable http client on Switch
+     cisco.ios.ios_config:
+       lines:
+         - ip http client source-interface Vlan <management VLAN IP>
+
+
+   - name: Create new Trustpoint Certificate
+     cisco.ios.ios_config:
+       lines:
+         - revocation-check none
+   
+       parents:
+         - crypto pki trustpoint SLA-TrustPoint
+   
+
+   - name: Activate License on Switch
+     cisco.ios.ios_command:
+       commands:
+         - license smart register idtoken <Generated License Token>

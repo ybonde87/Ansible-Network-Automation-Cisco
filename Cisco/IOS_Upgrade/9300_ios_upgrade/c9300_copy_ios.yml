@@ -1,0 +1,119 @@
+---
+# Ansible Playbook to upgrade Cisco IOS 
+
+- name: Copy CISCO IOS for C9300 switches
+  hosts: C9300
+
+  vars: 
+    upgrade_ios_version: 16.09.07
+
+  tasks:
+    - name: CHECK CURRENT VERSION
+      ios_facts:
+
+    - debug: 
+        msg: 
+        - "Current version is {{ ansible_net_version }}"
+      #  - "Upgrade to IOS release 16.09.07"
+
+    - debug: 
+        msg: 
+        - "Image is not compliant and will be upgraded to IOS release 16.09.07"
+
+      when: ansible_net_version != upgrade_ios_version
+
+## Create backup folder for today 
+
+- hosts: localhost
+
+  tasks:
+   - name: Get ansible date/time facts
+     setup:
+       filter: "ansible_date_time"
+       gather_subset: "!all"
+
+   - name: Store DTG as fact
+     set_fact:
+       DTG: "{{ ansible_date_time.date }}"
+
+   - name: Create Directory {{hostvars.localhost.DTG}}
+     file:
+      path: /home/ansible_project/backup/Sites/{{hostvars.localhost.DTG}}
+      state: directory
+  run_once: true
+
+## Take backup of running config
+
+- hosts: C9300
+
+  tasks:
+   - name: Backup Running Configuration
+     ios_command:
+       commands: show run 
+     register: config
+
+   - name: Save output to /home/ansible_project/backup/Sites
+     copy:
+       content: "{{config.stdout[0]}}"
+       dest: "/home/ansible_project/backup/Sites/{{hostvars.localhost.DTG}}/{{inventory_hostname}}-{{hostvars.localhost.DTG}}-running-config.txt"
+
+## Gather command output from the switch
+       
+- hosts: C9300
+
+  vars:
+    command_list:
+      - show clock
+    # - show users
+    # - show platform
+      - show power inline
+      - show vlan
+      - show etherchannel summary
+      - show cdp neigh
+      - sh switch stack-ports
+      - show switch
+    # - show switch stack-ports summary
+      - show env all
+    # - show ip ospf int brief
+    # - show ip ospf neigh
+      - show cdp neighbors detail
+      - show version
+    # - show license usage
+    # - show license summary
+      - show inventory raw
+      - show boot
+      - dir
+      - show int status | inc connected
+      - show int status
+      - show arp
+      - show ip interface brief
+
+## Save the gathered config in a text file
+
+  tasks:
+   - name: Run the SHOW commands and save output 
+     ios_command:
+       commands: "{{ command_list }}"
+     register: showoutput
+
+   - name: "Put all the files together into one nice text file"
+     template: 
+       src: template.j2 
+       dest: "/home/ansible_project/backup/Sites/{{hostvars.localhost.DTG}}/{{ inventory_hostname }}-{{hostvars.localhost.DTG}}-showoutput.txt"
+
+## Enable SCP server on Cisco Switch
+
+   - name: enable scp server on cisco switch 
+     ios_config:
+       lines:
+         - ip scp server enable
+      # save_when: always 
+
+## Copy software to target device 
+
+   - name: Copy ios Image // This could take up to 20 minutes
+     ansible.netcommon.net_put: 
+       src: "/home/ansible_project/production_ios_image/C9300/cat9k_iosxe.16.09.07.SPA.bin"
+       dest: "flash:/cat9k_iosxe.16.09.07.SPA.bin"
+     vars: 
+       ansible_command_timeout: 12000

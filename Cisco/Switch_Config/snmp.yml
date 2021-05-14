@@ -1,0 +1,6 @@
+---
+
+   - name: Configure Read Only SNMP on Cisco Switch 
+     ios_config:
+       lines:
+         - snmp-server community SNMP_TEST RO 24

@@ -1,0 +1,8 @@
+---
+
+
+   - name: Configure NTP
+     ios_config:
+
+       lines:
+         - ntp server 8.8.8.8 prefer

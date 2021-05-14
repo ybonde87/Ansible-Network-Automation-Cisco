@@ -1,0 +1,23 @@
+---
+
+
+   - name: Set file privilege for JDE Local RO User
+     ios_config:
+       lines:
+         - file privilege 7
+
+
+   - name: Set additional privileges for JDE Local RO User
+     ios_config:
+       lines:
+         - privilege exec level 7 show
+         - privilege exec level 7 show running-config
+         - privilege exec level 7 show running-config view
+         - privilege exec all level 7 show running-config view full
+
+
+   - name: Configure Local RO User for JDE
+     ios_config:
+       lines:
+         - username ciscoro privilege 7 secret ciscoro@123
+

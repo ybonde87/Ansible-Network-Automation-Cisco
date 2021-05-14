@@ -1,0 +1,8 @@
+---
+
+
+   - name: Configure VTP Mode as Transparent
+     ios_config:
+       lines:
+         - vtp mode transparent
+

@@ -1,0 +1,18 @@
+---
+
+  - name: Merge provided VLAN configuration with current VLAN configuration on the Switch
+    cisco.ios.ios_vlans:
+      config:
+      - name: Vlan_10
+        vlan_id: 10
+        state: active
+        shutdown: disabled
+      - name: Vlan_20
+        vlan_id: 20
+        state: active
+        shutdown: disabled
+      - name: Vlan_30
+        vlan_id: 30
+        state: active
+        shutdown: disabled
+      state: merged

@@ -1,0 +1,13 @@
+---
+
+
+   - name: Configure DENY Access List for Other Cisco WLC
+     ios_config:
+       lines:
+         - 10 permit ip any <Cisco WLC IP/range>
+         - 40 deny udp any any eq 5247
+         - 50 deny udp any any eq 5246
+         - 100 permit ip any any
+       parents:
+         - ip access-list extended DENY_AP_Cisco_WLC
+

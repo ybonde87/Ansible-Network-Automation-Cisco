@@ -1,0 +1,15 @@
+---
+
+
+   - name: Configure Errordisable parameters on the Switch
+     ios_config:
+
+       lines:
+         - errdisable recovery cause udld
+         - errdisable recovery cause bpduguard
+         - errdisable recovery cause storm-control
+         - errdisable recovery cause inline-power
+         - errdisable recovery cause gbic-invalid                 
+         - errdisable recovery cause link-flap 
+         - errdisable recovery cause channel-misconfig 
+         - errdisable recovery interval 900

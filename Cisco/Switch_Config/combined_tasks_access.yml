@@ -1,0 +1,20 @@
+---
+
+- hosts: EMEA-Access-Switches
+  gather_facts: false
+  connection: network_cli
+
+  tasks:
+
+   - import_tasks: banner.yml
+   - import_tasks: enable_services.yml
+#  - import_tasks: rename_VLANs_Access.yml
+   - import_tasks: ro_user.yml
+   - import_tasks: emea_acl.yml
+   - import_tasks: ntp.yml
+   - import_tasks: syslog.yml
+   - import_tasks: snmp.yml
+   - import_tasks: global_snmp_parameters.yml
+   - import_tasks: disable_services.yml
+   - import_tasks: global_ssh_config.yml
+#  - import_tasks: tacacs.yml

@@ -1,0 +1,30 @@
+---
+
+
+   - name: Enable Global SNMP Parameters on Cisco Switch 
+     ios_config:
+       lines:
+         - snmp-server view PingMIB sysUpTime included
+         - snmp-server view PingMIB ciscoPingMIB included
+         - snmp-server view PingMIB ciscoRttMonMIB included
+         - snmp-server view ConfigSet lsystem included
+         - snmp-server view RestrictedMIB iso included
+         - snmp-server view RestrictedMIB ip.1 excluded
+         - snmp-server packetsize 8192
+         - snmp-server queue-length 20
+         - snmp-server contact Ansible
+         - snmp-server enable traps
+         - snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
+         - snmp-server enable traps vtp
+         - snmp-server enable traps vlancreate
+         - snmp-server enable traps vlandelete
+         - snmp-server enable traps port-security trap-rate 10
+         - snmp-server enable traps envmon fan status shutdown supply temperature
+         - snmp-server enable traps config
+         - snmp-server enable traps bridge newroot topologychange
+         - snmp-server enable traps syslog
+         - snmp-server enable traps flowmon
+         - snmp-server enable traps entity-perf throughput-notif
+         - snmp-server enable traps call-home message-send-fail server-fail
+         - snmp-server enable traps tty
+         - snmp ifmib ifindex persist

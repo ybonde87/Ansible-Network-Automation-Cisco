@@ -1,0 +1,34 @@
+---
+
+
+   - name: Configure SYSLOG
+     ios_config:
+
+       lines:
+         - logging host 10.0.0.1
+
+
+   - name: Configure Source Interface for SYSLOG
+     ios_config:
+       lines:
+         - logging source-interface vlan <Management VLAN ID>
+
+
+   - name: Configure logging buffer
+     ios_config:
+
+       lines:
+         - logging buffered 2000000
+
+
+   - name: Configure other global Parameters for SYSLOG
+     ios_config:
+       lines:
+         - no logging console
+         - no logging monitor
+         - logging trap warnings
+         - logging origin-id hostname
+         - login on-failure log
+         - login on-success log
+         
+

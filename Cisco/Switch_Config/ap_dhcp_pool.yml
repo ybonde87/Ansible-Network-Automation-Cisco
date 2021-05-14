@@ -1,0 +1,12 @@
+---
+
+
+   - name: Configure DHCP Pool for AP
+     ios_config:
+       lines:
+         - network 10.230.65.128 255.255.255.128
+         - default-router 10.230.65.129
+         - option 43 hex <Cisco Controller Hex>
+       parents:
+         - ip dhcp pool Access_Point
+

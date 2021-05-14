@@ -1,0 +1,14 @@
+---
+
+
+   - name: Enable Services
+     ios_config:
+
+       lines:
+         - service timestamps debug datetime msec localtime show-timezone
+         - service timestamps log datetime msec localtime show-timezone
+         - service sequence-numbers
+         - service password-encryption
+         - service tcp-keepalives-in
+         - service tcp-keepalives-out
+

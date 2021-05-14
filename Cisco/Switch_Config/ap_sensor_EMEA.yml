@@ -1,0 +1,12 @@
+---
+
+
+   - name: Configure DHCP Pool for DNAC AP Sensor
+     ios_config:
+       lines:
+         - network 10.xxx.xxx.xxx 255.255.255.xx
+         - default-router 10.xxx.xxx.xxx
+         - option 43 ascii 5A1N;B2;K5;I<DNAC Enterprise Port IP>;J80 
+       parents:
+         - ip dhcp pool DNAC_AP_Sensor
+

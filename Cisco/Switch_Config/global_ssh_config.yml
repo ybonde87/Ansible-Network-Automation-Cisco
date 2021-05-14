@@ -1,0 +1,9 @@
+---
+
+
+   - name: Configure Global SSH Parameters
+     ios_config:
+
+       lines:
+         - ip ssh time-out 60
+         - ip ssh authentication-retries 2

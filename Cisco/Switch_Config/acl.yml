@@ -1,0 +1,17 @@
+---
+
+
+   - name: Configure Permit ACL 23 on Cisco Switch 
+     ios_config:
+       
+       lines:
+         - access-list 23 permit any
+
+
+
+   - name: Configure Permit ACL 24 on Cisco Switch 
+     ios_config:
+       
+       lines:
+         - access-list 24 permit any
+

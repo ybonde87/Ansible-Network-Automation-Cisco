@@ -1,0 +1,17 @@
+---
+
+
+   - name: Disable Unused Services
+     ios_config:
+
+       lines:
+
+         - no service pad
+         - no ip rcmd rcp-enable
+         - no ip rcmd rsh-enable
+         - no service udp-small-servers
+         - no service tcp-small-servers
+         - no service finger
+         - no ip finger
+         - no ip source-route
+         - no ip bootp server

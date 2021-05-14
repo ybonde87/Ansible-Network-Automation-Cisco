@@ -1,0 +1,8 @@
+---
+
+
+   - name: Configure Spanning-tree Root Priority on a Core Switch
+     ios_config:
+       lines:
+         - spanning-tree vlan 1-4093 priority 4096
+

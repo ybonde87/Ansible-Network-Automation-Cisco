@@ -1,0 +1,17 @@
+---
+
+
+   - name: Configure Domain Name 
+     ios_config:
+       lines:
+         - ip domain name example.com
+
+
+
+   - name: Configure Domain Name Parameters
+     ios_config:
+       lines:
+         - no ip domain-lookup
+         - ip domain round-robin
+
+

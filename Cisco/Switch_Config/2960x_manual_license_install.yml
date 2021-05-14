@@ -1,0 +1,9 @@
+---
+
+
+   - name: Configure DNAC licensing on Switch
+     cisco.ios.ios_config:
+       lines:
+         - license accept end user agreement force
+         - license boot level addon dna-essentials
+       save_when: always

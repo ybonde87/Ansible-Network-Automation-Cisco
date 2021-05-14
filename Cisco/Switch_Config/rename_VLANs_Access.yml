@@ -1,0 +1,54 @@
+---
+
+   - name: Rename Must Have Management VLANs
+     cisco.ios.ios_vlans:
+       config:
+       - name: Facilities
+         vlan_id: 15
+         state: active
+         shutdown: disabled
+       - name: VOIP
+         vlan_id: 40
+         state: active
+         shutdown: disabled
+       - name: Sw_Management
+         vlan_id: 51
+         state: active
+         shutdown: disabled
+       - name: AP_Management
+         vlan_id: 52
+         state: active
+         shutdown: disabled
+       - name: Sensor_Management
+         vlan_id: 53
+         state: active
+         shutdown: disabled
+       - name: Servers
+         vlan_id: 75
+         state: active
+         shutdown: disabled
+       - name: Server_Management
+         vlan_id: 76
+         state: active
+         shutdown: disabled
+       - name: Users
+         vlan_id: 90
+         state: active
+         shutdown: disabled
+       - name: Printers
+         vlan_id: 100
+         state: active
+         shutdown: disabled
+       - name: Corporate_WiFi
+         vlan_id: 120
+         state: active
+         shutdown: disabled
+       - name: Guest_WiFi
+         vlan_id: 500
+         state: active
+         shutdown: disabled
+       - name: Spare
+         vlan_id: 999
+         state: active
+         shutdown: disabled
+       state: merged

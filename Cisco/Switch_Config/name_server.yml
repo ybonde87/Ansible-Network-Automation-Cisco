@@ -1,0 +1,8 @@
+---
+
+
+   - name: Configure Domain Name Server
+     ios_config:
+       lines:
+         - ip name-server 10.0.0.1
+
