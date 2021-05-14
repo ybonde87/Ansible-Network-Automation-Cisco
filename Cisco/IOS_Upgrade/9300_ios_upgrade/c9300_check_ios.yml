@@ -18,6 +18,12 @@
 
     - debug: 
         msg: 
+        - "Image is compliant and will not be upgraded"
+
+      when: ansible_net_version == upgrade_ios_version
+
+    - debug: 
+        msg: 
         - "Image is not compliant and will be upgraded"
 
       when: ansible_net_version != upgrade_ios_version
