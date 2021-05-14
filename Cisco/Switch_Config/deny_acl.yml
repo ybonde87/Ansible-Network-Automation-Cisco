@@ -1,7 +1,7 @@
 ---
 
 
-   - name: Configure DENY Access List for Other Cisco WLC
+   - name: Configure DENY Access List for Other Cisco WLC #Call This ACL under the VLAN interface of the AP on the Cisco Core Switch
      ios_config:
        lines:
          - 10 permit ip any <Cisco WLC IP/range>
