@@ -101,13 +101,22 @@
        src: template.j2 
        dest: "/home/ansible_project/backup/Sites/{{hostvars.localhost.DTG}}/{{ inventory_hostname }}-{{hostvars.localhost.DTG}}-showoutput.txt"
 
+## Configure SSH & TCP Window Sizing
+
+   - name: Configure SSH & TCP Window Sizing for better SCP performance 
+     ios_config:
+       lines:
+         - ip tcp window-size 16512
+         - ip ssh window-size 16512
+      # save_when: always 
+
 ## Enable SCP server on Cisco Switch
 
    - name: enable scp server on cisco switch 
      ios_config:
        lines:
          - ip scp server enable
-      # save_when: always 
+       save_when: always 
 
 ## Copy software to target device 
 
@@ -116,4 +125,17 @@
        src: "/home/ansible_project/production_ios_image/C9300/cat9k_iosxe.16.09.07.SPA.bin"
        dest: "flash:/cat9k_iosxe.16.09.07.SPA.bin"
      vars: 
-       ansible_command_timeout: 12000
+       ansible_command_timeout: 5000
+
+## Verify MD5 Hash of the uploaded IOS before starting the Upgrade
+
+   - name: VERIFY MD5 hash of new uploaded IOS
+     cisco.ios.ios_command:
+       commands: "verify /md5 flash:/cat9k_iosxe.16.09.07.SPA.bin"
+     register: md5_result
+
+   - debug: 
+       msg: 
+       - "Uploaded Image is Verified and ready for the upgrade"
+
+     when: verified_md5 == md5_result.stdout[0].split(' = ')[1]
