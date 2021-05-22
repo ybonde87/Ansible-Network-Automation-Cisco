@@ -106,26 +106,40 @@
      ios_config:
        lines:
          - ip scp server enable
-      # save_when: always 
-
-## SAVE the Running Config 
-
-   - name: Save running config 
-     ios_config:
-       save_when: always 
 
 ## Copy software to target device 
 
-   - name: Copy ios Image // This could take up to 10 minutes
+   - name: Copy ios Image // This could take up to 30 minutes
      ansible.netcommon.net_put: 
        src: "/home/ansible_project/production_ios_image/C2960XR/c2960x-universalk9-mz.152-7.E3.bin"
        dest: "flash:/c2960x-universalk9-mz.152-7.E3.bin"
      vars: 
-       ansible_command_timeout: 2000
-
+       ansible_command_timeout: 3600
 
 ## SAVE the Running Config 
 
    - name: Save running config 
      ios_config:
        save_when: always 
+
+## Verify MD5 Hash of the IOS before setting the boot variables
+
+   - name: VERIFY MD5 hash of new uploaded IOS
+     cisco.ios.ios_command:
+       commands: "verify /md5 flash:/c2960x-universalk9-mz.152-7.E3.bin"
+     register: md5_result
+
+   - debug: 
+       msg: 
+       - "Uploaded Image is Verified and ready for the upgrade"
+
+     when: verified_md5 == md5_result.stdout[0].split(' = ')[1]
+
+
+## Setup the boot variable on cisco switch
+
+   - name: Setting the boot variable on cisco switch
+     ios_config:
+       lines:
+         - boot system "flash:/c2960x-universalk9-mz.152-7.E3.bin"
+     when: verified_md5 == md5_result.stdout[0].split(' = ')[1]
