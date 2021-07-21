@@ -6,6 +6,7 @@
 
   vars: 
     upgrade_ios_version: 16.09.07
+    verified_md5: d8968c3b0e180e207260c39838473002
 
   tasks:
     - name: CHECK CURRENT VERSION
