@@ -2,7 +2,7 @@
 # Ansible Playbook to upgrade Cisco IOS 
 
 - name: Upgrade CISCO IOS for 2960X/R switches
-  hosts: IOS_UPGRADE
+  hosts: IOS_UPGRADE-1
 
   vars: 
     upgrade_ios_version: 15.2(7)E3
